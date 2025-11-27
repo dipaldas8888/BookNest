@@ -1,13 +1,15 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
 import { Outlet } from "react-router-dom";
+import Navbar from "./components/Navbar";
 
 function App() {
   return (
     <>
-      <Outlet />
+      <Navbar />
+      <div className="min-h-screen max-w-screen-2xl  mx-auto px-4 py-4 font-primary">
+        <Outlet />
+      </div>
+      <footer>footer</footer>
     </>
   );
 }
