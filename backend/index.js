@@ -2,10 +2,21 @@ const express = require("express");
 const mongoose = require("mongoose");
 const BookModel = require("./src/books/BookModel");
 require("dotenv").config();
+const BookRoute = require("./src/books/BookRoute");
+const cors = require("cors");
 
 const app = express();
 
 const port = process.env.PORT || 5000;
+app.use(express.json());
+app.use(
+  cors({
+    origin: ["https://localhost:5173"],
+    credentials: true,
+  })
+);
+
+app.use("/api/books", BookRoute);
 
 mongoose
   .connect(process.env.MONGO_URL)
@@ -16,23 +27,6 @@ mongoose
     console.log("Connection failed", error);
   });
 
-app.post("/add-book", async (req, res) => {
-  try {
-    const newBook = await BookModel.create({
-      title: req.body.title,
-      author: req.body.author,
-      price: req.body.price,
-    });
-
-    res.json({ message: "Book added successfully!", data: newBook });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-app.use("/", (req, res) => {
-  res.send("Hello World");
-});
 app.listen(port, () => {
   console.log("Server running is  in 5000");
 });
