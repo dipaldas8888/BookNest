@@ -85,3 +85,11 @@ const DeleteBook = async (req, res) => {
     });
   }
 };
+
+module.exports = {
+  PostBook,
+  getAllBooks,
+  updateBook,
+  getSingleBook,
+  DeleteBook,
+};
