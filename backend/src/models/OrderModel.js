@@ -44,3 +44,5 @@ const OrderSchema = new mongoose.Schema(
     timestamp: true,
   }
 );
+
+module.exports = OrderSchema;
