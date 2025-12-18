@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/UserModel");
+const bcrypt = require("bcrypt");
 
 const generateToken = (user) => {
   return jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, {
@@ -43,6 +44,29 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
+
+    if (
+      email === process.env.ADMIN_EMAIL &&
+      password === process.env.ADMIN_PASSWORD
+    ) {
+      let admin = await User.findOne({ email });
+      if (!admin) {
+        admin = new User({
+          name: "Admin",
+          email,
+          password,
+          role: "admin",
+        });
+        await admin.save();
+      }
+      const token = generateToken(admin);
+
+      return res.status(200).send({
+        message: "Admin login Successfully",
+        token,
+        role: "admin",
+      });
+    }
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).send({
