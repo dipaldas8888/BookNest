@@ -1,8 +1,9 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const BookModel = require("./src/books/BookModel");
 require("dotenv").config();
-const BookRoute = require("./src/books/BookRoute");
+const BookRoute = require("./src/routes/BookRoute");
+const OrderRoutes = require("./src/routes/OrderRoutes");
+const AuthRoutes = require("./src/routes/AuthRoutes");
 const cors = require("cors");
 
 const app = express();
@@ -17,6 +18,8 @@ app.use(
 );
 
 app.use("/api/books", BookRoute);
+app.use("/", OrderRoutes);
+app.use("/", AuthRoutes);
 
 mongoose
   .connect(process.env.MONGO_URL)
