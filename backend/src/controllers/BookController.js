@@ -33,7 +33,16 @@ const getAllBooks = async (req, res) => {
 const getSingleBook = async (req, res) => {
   try {
     const { id } = req.params;
-    const Book = await Book.findById();
+    const book = await Book.findById(id);
+    if (!book) {
+      return res.status(404).send({
+        message: "Book not found",
+      });
+    }
+    res.status(200).send({
+      message: "Book fetched Successfully",
+      book,
+    });
   } catch (error) {
     console.log("Some eror occured", error);
     res.status(500).send({
