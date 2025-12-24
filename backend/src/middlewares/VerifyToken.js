@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 
 const verifyToken = (req, res, next) => {
   const authHeader = req.headers.authorization || "";
-  if (!authHeaders.startsWith("Bearer ")) {
+  if (!authHeader.startsWith("Bearer ")) {
     return res.status(401).json({
       message: "No token provided",
     });

@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs");
 
 const generateToken = (user) => {
   return jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, {
-    expiration: "7d",
+    expiresIn: "7d",
   });
 };
 
@@ -21,7 +21,6 @@ const register = async (req, res) => {
       name,
       email,
       password,
-      role,
     });
     await user.save();
     res.status(201).send({
@@ -33,7 +32,7 @@ const register = async (req, res) => {
         role: user.role,
       },
     });
-  } catch (err) {
+  } catch (error) {
     console.log("Error registering user", error);
     res.status(500).json({
       message: "Failed to register User",

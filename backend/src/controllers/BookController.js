@@ -77,7 +77,8 @@ const updateBook = async (req, res) => {
 };
 const DeleteBook = async (req, res) => {
   try {
-    const deletedbook = await Book.findByIdAndDelete();
+    const { id } = req.params;
+    const deletedbook = await Book.findByIdAndDelete(id);
     if (!deletedbook) {
       res.status(404).send({
         message: "Book not found",
