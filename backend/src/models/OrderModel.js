@@ -17,17 +17,15 @@ const OrderItemSchema = new mongoose.Schema(
       required: true,
     },
   },
-  {
-    _id: false,
-    timestamps: true,
-  }
+  { _id: false }
 );
+
 const OrderSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      reqired: true,
+      required: true,
     },
     items: [OrderItemSchema],
     totalAmount: {
@@ -40,9 +38,7 @@ const OrderSchema = new mongoose.Schema(
       default: "completed",
     },
   },
-  {
-    timestamp: true,
-  }
+  { timestamps: true }
 );
 
 module.exports = mongoose.model("Order", OrderSchema);

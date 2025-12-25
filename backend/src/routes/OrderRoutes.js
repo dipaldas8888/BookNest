@@ -12,7 +12,7 @@ const VerifyAdminToken = require("../middlewares/VerifyAdminToken");
 const router = express.Router();
 
 router.get("/all-orders", VerifyAdminToken, getAllOrders);
-router.post("/", VerifyToken, createOrder);
+router.post("/order", VerifyToken, createOrder);
 router.get("/my-orders", VerifyToken, getMyOrders);
 
 module.exports = router;
