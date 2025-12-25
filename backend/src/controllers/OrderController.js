@@ -2,7 +2,7 @@ const Order = require("../models/OrderModel");
 
 const createOrder = async (req, res) => {
   try {
-    const userId = req.user.Id;
+    const userId = req.user.id;
     const { items, totalAmount } = req.body;
     const order = await Order.create({
       user: userId,
@@ -13,7 +13,7 @@ const createOrder = async (req, res) => {
 
     res.status(201).send({
       message: "Order created Successfully",
-      Order: Order,
+      order,
     });
   } catch (error) {
     console.log("Error occured", error);
@@ -46,6 +46,11 @@ const getMyOrders = async (req, res) => {
     const orders = await Order.find({ user: userId })
       .populate("items.books", "title newPrice coverImage")
       .sort({ createdAt: -1 });
+
+    res.status(200).send({
+      message: "My Orders fetched Successfully",
+      orders,
+    });
   } catch (error) {
     console.log("Error fetching user Orders", error);
     res.status(500).send({
