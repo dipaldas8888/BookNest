@@ -4,7 +4,7 @@ export default function Hero() {
   return (
     <section
       className="
-      bg-[#FAF7F2] 
+       
       flex items-center 
       py-20             
                    
@@ -12,7 +12,7 @@ export default function Hero() {
     >
       <div
         className="
-        max-w-7xl mx-auto 
+        max-w-7xl mx-auto
         grid grid-cols-1 lg:grid-cols-2
         gap-12 items-center
         text-center md:text-left   /* NEW: center text on small screens */
@@ -61,7 +61,7 @@ export default function Hero() {
             src={heroImage}
             alt="Reading books"
             className="
-            w-72 sm:w-96 md:w-full lg:w-[450px]
+            w-72 sm:w-96 md:w-full lg:w-[550px]
             px-2
             rounded-2xl shadow-xl 
             hover:scale-105 transition-transform duration-300
