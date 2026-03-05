@@ -1,19 +1,31 @@
 const express = require("express");
+const router = express.Router();
+
+const upload = require("../middlewares/upload");
+const verifyAdminToken = require("../middlewares/verifyAdminToken");
 
 const {
   PostBook,
   getAllBooks,
-  getSingleBook,
   updateBook,
+  getSingleBook,
   DeleteBook,
-} = require("../controllers/BookController");
+} = require("../controllers/bookController");
 
-const router = express.Router();
-
-router.post("/add-book", PostBook);
-router.get("/get-books", getAllBooks);
+// PUBLIC ROUTES
+router.get("/", getAllBooks);
 router.get("/:id", getSingleBook);
-router.put("/update/:id", updateBook);
-router.delete("/delete/:id", DeleteBook);
+
+// ADMIN ROUTES
+router.post("/create", verifyAdminToken, upload.single("coverImage"), PostBook);
+
+router.put(
+  "/update/:id",
+  verifyAdminToken,
+  upload.single("coverImage"),
+  updateBook,
+);
+
+router.delete("/delete/:id", verifyAdminToken, DeleteBook);
 
 module.exports = router;
