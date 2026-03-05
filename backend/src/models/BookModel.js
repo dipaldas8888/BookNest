@@ -6,41 +6,39 @@ const bookSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+
     description: {
       type: String,
       required: true,
     },
+
     category: {
       type: String,
       required: true,
     },
+
     trending: {
       type: Boolean,
-      required: true,
       default: false,
     },
+
     coverImage: {
-      type: String,
-      required: true,
+      url: {
+        type: String,
+        required: true,
+      },
+      public_id: {
+        type: String,
+        required: true,
+      },
     },
-    oldPrice: {
+
+    price: {
       type: Number,
       required: true,
-    },
-    newPrice: {
-      type: Number,
-      required: true,
-    },
-    createdAt: {
-      type: Date,
-      default: Date.now,
     },
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true },
 );
 
-const Book = mongoose.model("Book", bookSchema);
-
-module.exports = Book;
+module.exports = mongoose.model("Book", bookSchema);

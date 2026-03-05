@@ -1,9 +1,11 @@
 import Books from "../assets/Books.jpg";
+import Sale from "../assets/BookSale.jpg";
+import Delivery from "../assets/Delivery.jpg";
 
 export default function Features() {
   return (
     <section className="py-20 bg-white">
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-1">
         <h1 className="text-3xl font-semibold text-center mx-auto">
           Why Readers Love Us
         </h1>
@@ -29,7 +31,7 @@ export default function Features() {
           <div className="hover:-translate-y-0.5 transition duration-300">
             <img
               className="rounded-xl w-full"
-              src="https://images.unsplash.com/photo-1592496001020-30906f8b01c3?auto=format&fit=crop&w=800&q=80"
+              src={Sale}
               alt="Affordable Prices"
             />
             <h3 className="text-base font-semibold text-slate-700 mt-4">
@@ -43,7 +45,7 @@ export default function Features() {
           <div className="hover:-translate-y-0.5 transition duration-300">
             <img
               className="rounded-xl w-full"
-              src="https://images.unsplash.com/photo-1598970434795-0c54fe7c0648?auto=format&fit=crop&w=800&q=80"
+              src={Delivery}
               alt="Fast Delivery"
             />
             <h3 className="text-base font-semibold text-slate-700 mt-4">
