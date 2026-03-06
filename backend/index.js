@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const morgan = require("morgan");
 require("dotenv").config();
 const BookRoute = require("./src/routes/BookRoutes");
 const OrderRoutes = require("./src/routes/OrderRoutes");
@@ -14,8 +15,10 @@ app.use(
   cors({
     origin: ["https://localhost:5173"],
     credentials: true,
-  })
+  }),
 );
+
+app.use(morgan("dev"));
 
 app.use("/api/books", BookRoute);
 app.use("/", OrderRoutes);

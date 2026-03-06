@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
-const upload = require("../middlewares/upload");
-const verifyAdminToken = require("../middlewares/verifyAdminToken");
+const upload = require("../middlewares/upload.js");
+const verifyAdminToken = require("../middlewares/VerifyAdminToken.js");
 
 const {
   PostBook,
@@ -10,7 +10,7 @@ const {
   updateBook,
   getSingleBook,
   DeleteBook,
-} = require("../controllers/bookController");
+} = require("../controllers/BookController");
 
 // PUBLIC ROUTES
 router.get("/", getAllBooks);
