@@ -4,7 +4,7 @@ import Delivery from "../assets/Delivery.jpg";
 
 export default function Features() {
   return (
-    <section className="py-20 bg-white">
+    <section className="py-20 bg-gray">
       <div className="max-w-7xl mx-auto px-1">
         <h1 className="text-3xl font-semibold text-center mx-auto">
           Why Readers Love Us
