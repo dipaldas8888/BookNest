@@ -4,9 +4,8 @@ export default function Hero() {
   return (
     <section
       className="
-       
       flex items-center 
-      py-20             
+      py-16  px-0 md:px-10         
                    
     "
     >

@@ -4,7 +4,7 @@ import Delivery from "../assets/Delivery.jpg";
 
 export default function Features() {
   return (
-    <section className="py-20 bg-gray">
+    <section className="py-2 bg-gray">
       <div className="max-w-7xl mx-auto px-1">
         <h1 className="text-3xl font-semibold text-center mx-auto">
           Why Readers Love Us
@@ -13,10 +13,10 @@ export default function Features() {
           Everything you need to read more, pay less, and find the perfect book.
         </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 mt-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 mt-16 px-4 sm:px-1">
           <div className="hover:-translate-y-0.5 transition duration-300">
             <img
-              className="rounded-xl w-full"
+              className="rounded-xl w-full h-60"
               src={Books}
               alt="Huge Collection"
             />
@@ -30,7 +30,7 @@ export default function Features() {
 
           <div className="hover:-translate-y-0.5 transition duration-300">
             <img
-              className="rounded-xl w-full"
+              className="rounded-xl w-full h-60"
               src={Sale}
               alt="Affordable Prices"
             />
@@ -44,7 +44,7 @@ export default function Features() {
 
           <div className="hover:-translate-y-0.5 transition duration-300">
             <img
-              className="rounded-xl w-full"
+              className="rounded-xl w-full h-60 object-cover object-top"
               src={Delivery}
               alt="Fast Delivery"
             />
