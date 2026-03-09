@@ -1,24 +1,51 @@
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { registerUser } from "../redux/features/authSlice";
 
 const Register = () => {
+  const dispatch = useDispatch();
+
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    dispatch(registerUser(formData));
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center ">
+    <div className="min-h-screen flex items-center justify-center">
       <div className="flex bg-white shadow-lg rounded-lg mx-auto overflow-hidden max-w-sm lg:max-w-4xl">
-        <div className="hidden lg:block lg:w-1/2 ">
+        {/* Image Section */}
+        <div className="hidden lg:block lg:w-1/2">
           <img
             src="https://images.unsplash.com/photo-1546514714-df0ccc50d7bf?auto=format&fit=crop&w=667&q=80"
             alt="book"
             className="object-cover w-full h-full"
           />
         </div>
-        <div className="w-full p-7 lg:w-1/2 ">
-          <h1 className="text-2xl text-center text-gray-700 font-bold ">
+
+        <div className="w-full p-7 lg:w-1/2">
+          <h1 className="text-2xl text-center text-gray-700 font-bold">
             BookNest
           </h1>
+
           <p className="text-center text-gray-600">Welcome!</p>
-          <a
-            href="#"
-            className="flex items-center justify-center mt-4 text-white rounded-lg shadow-md hover:bg-gray-100"
+
+          <button
+            type="button"
+            className="flex items-center justify-center mt-4 w-full rounded-lg shadow-md hover:bg-gray-100"
           >
             <div className="px-4 py-3">
               <svg className="h-6 w-6" viewBox="0 0 40 40">
@@ -29,62 +56,83 @@ const Register = () => {
               </svg>
             </div>
 
-            <h1 className="px-4 py-3 w-5/6 text-center text-gray-600 font-bold">
+            <span className="px-4 py-3 text-gray-600 font-bold">
               Sign in with Google
-            </h1>
-          </a>
-          <div className="mt-4 flex items-center justify-between">
-            <span className="border-b w-1/5 lg:w-1/4"></span>
+            </span>
+          </button>
 
-            <a href="#" className="text-xs text-center text-gray-500 uppercase">
+          <div className="mt-4 flex items-center justify-between">
+            <span className="border-b w-1/5"></span>
+
+            <span className="text-xs text-gray-500 uppercase">
               or login with email
-            </a>
+            </span>
 
-            <span className="border-b w-1/5 lg:w-1/4"></span>
+            <span className="border-b w-1/5"></span>
           </div>
-          <div className="mt-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              username
-            </label>
 
-            <input
-              type="email"
-              className="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full"
-            />
-          </div>
-          <div className="mt-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              Email Address
-            </label>
+          <form onSubmit={handleSubmit}>
+            {/* Username */}
+            <div className="mt-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2">
+                Username
+              </label>
 
-            <input
-              type="email"
-              className="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full"
-            />
-          </div>{" "}
-          <div className="mt-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              password
-            </label>
+              <input
+                type="text"
+                name="username"
+                onChange={handleChange}
+                required
+                className="bg-gray-200 text-gray-700 border border-gray-300 rounded py-2 px-4 block w-full focus:outline-none"
+              />
+            </div>
 
-            <input
-              type="email"
-              className="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full"
-            />
-          </div>
-          <div className="mt-8">
-            <button className="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600">
-              Register
-            </button>
-          </div>
+            <div className="mt-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2">
+                Email Address
+              </label>
+
+              <input
+                type="email"
+                name="email"
+                onChange={handleChange}
+                required
+                className="bg-gray-200 text-gray-700 border border-gray-300 rounded py-2 px-4 block w-full focus:outline-none"
+              />
+            </div>
+
+            <div className="mt-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2">
+                Password
+              </label>
+
+              <input
+                type="password"
+                name="password"
+                onChange={handleChange}
+                required
+                className="bg-gray-200 text-gray-700 border border-gray-300 rounded py-2 px-4 block w-full focus:outline-none"
+              />
+            </div>
+
+            <div className="mt-8">
+              <button
+                type="submit"
+                className="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600"
+              >
+                Register
+              </button>
+            </div>
+          </form>
+
           <div className="mt-4 flex items-center justify-between">
-            <span className="border-b w-1/5 md:w-1/4"></span>
+            <span className="border-b w-1/5"></span>
 
-            <a href="#" className="text-xs text-gray-500 font-bold  uppercase">
+            <span className="text-xs text-gray-500 font-bold uppercase">
               or sign in
-            </a>
+            </span>
 
-            <span className="border-b w-1/5 md:w-1/4"></span>
+            <span className="border-b w-1/5"></span>
           </div>
         </div>
       </div>
