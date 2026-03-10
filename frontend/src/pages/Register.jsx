@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { registerUser } from "../redux/features/authSlice";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 const Register = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    username: "",
+    name: "",
     email: "",
     password: "",
   });
@@ -18,10 +20,18 @@ const Register = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    dispatch(registerUser(formData));
+    try {
+      const resultAction = await dispatch(registerUser(formData));
+
+      if (registerUser.fulfilled.match(resultAction)) {
+        navigate("/login");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -72,7 +82,6 @@ const Register = () => {
           </div>
 
           <form onSubmit={handleSubmit}>
-            {/* Username */}
             <div className="mt-4">
               <label className="block text-gray-700 text-sm font-bold mb-2">
                 Username
@@ -80,7 +89,8 @@ const Register = () => {
 
               <input
                 type="text"
-                name="username"
+                name="name"
+                value={formData.name}
                 onChange={handleChange}
                 required
                 className="bg-gray-200 text-gray-700 border border-gray-300 rounded py-2 px-4 block w-full focus:outline-none"
@@ -95,6 +105,7 @@ const Register = () => {
               <input
                 type="email"
                 name="email"
+                value={formData.email}
                 onChange={handleChange}
                 required
                 className="bg-gray-200 text-gray-700 border border-gray-300 rounded py-2 px-4 block w-full focus:outline-none"
@@ -109,6 +120,7 @@ const Register = () => {
               <input
                 type="password"
                 name="password"
+                value={formData.password}
                 onChange={handleChange}
                 required
                 className="bg-gray-200 text-gray-700 border border-gray-300 rounded py-2 px-4 block w-full focus:outline-none"
@@ -128,9 +140,12 @@ const Register = () => {
           <div className="mt-4 flex items-center justify-between">
             <span className="border-b w-1/5"></span>
 
-            <span className="text-xs text-gray-500 font-bold uppercase">
+            <Link
+              to="/login"
+              className="text-xs text-gray-500 font-bold uppercase"
+            >
               or sign in
-            </span>
+            </Link>
 
             <span className="border-b w-1/5"></span>
           </div>

@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../redux/features/authSlice";
 
 const Login = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { loading, error } = useSelector((state) => state.auth);
 
   const [formData, setFormData] = useState({
@@ -18,9 +20,18 @@ const Login = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(loginUser(formData));
+
+    try {
+      const resultAction = await dispatch(loginUser(formData));
+
+      if (loginUser.fulfilled.match(resultAction)) {
+        navigate("/");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -70,7 +81,6 @@ const Login = () => {
           </div>
 
           <form onSubmit={handleSubmit}>
-            {/* Email */}
             <div className="mt-4">
               <label className="block text-gray-700 text-sm font-bold mb-2">
                 Email Address
@@ -107,8 +117,6 @@ const Login = () => {
               />
             </div>
 
-            {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-
             <div className="mt-8">
               <button
                 type="submit"
@@ -122,9 +130,12 @@ const Login = () => {
           <div className="mt-4 flex items-center justify-between">
             <span className="border-b w-1/5 md:w-1/4"></span>
 
-            <a href="#" className="text-xs text-gray-500 font-bold uppercase">
+            <Link
+              to="/register"
+              className="text-xs text-gray-500 font-bold uppercase"
+            >
               or sign up
-            </a>
+            </Link>
 
             <span className="border-b w-1/5 md:w-1/4"></span>
           </div>
