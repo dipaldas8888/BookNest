@@ -1,7 +1,6 @@
 const Book = require("../models/BookModel");
 const cloudinary = require("../config/cloudinary");
 
-// CREATE BOOK
 const PostBook = async (req, res) => {
   try {
     const book = new Book({
@@ -28,10 +27,18 @@ const PostBook = async (req, res) => {
   }
 };
 
-// GET ALL BOOKS
 const getAllBooks = async (req, res) => {
   try {
-    const books = await Book.find().sort({ createdAt: -1 });
+    const { category, search } = req.query;
+    let query = {};
+    if (category && category !== "All") {
+      query.category = { $regex: `^${category}$`, $options: "i" };
+    }
+
+    if (search) {
+      query.title = { $regex: search, $options: "i" };
+    }
+    const books = await Book.find(query).sort({ createdAt: -1 });
 
     res.status(200).send({
       message: "Books fetched successfully",
@@ -46,7 +53,6 @@ const getAllBooks = async (req, res) => {
   }
 };
 
-// GET SINGLE BOOK
 const getSingleBook = async (req, res) => {
   try {
     const { id } = req.params;
@@ -72,7 +78,6 @@ const getSingleBook = async (req, res) => {
   }
 };
 
-// UPDATE BOOK
 const updateBook = async (req, res) => {
   try {
     const { id } = req.params;
@@ -85,9 +90,7 @@ const updateBook = async (req, res) => {
       });
     }
 
-    // If new image uploaded
     if (req.file) {
-      // delete old image from cloudinary
       await cloudinary.uploader.destroy(book.coverImage.public_id);
 
       book.coverImage = {
@@ -96,7 +99,6 @@ const updateBook = async (req, res) => {
       };
     }
 
-    // update other fields
     book.title = req.body.title || book.title;
     book.description = req.body.description || book.description;
     book.category = req.body.category || book.category;
