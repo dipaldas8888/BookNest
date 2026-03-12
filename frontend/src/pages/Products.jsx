@@ -3,6 +3,7 @@ import ProductCategory from "../components/ProductCategory";
 import BookCard from "../components/BookCard";
 import SearchBar from "../components/SearchBar";
 import { fetchBooks } from "../api/booksApi";
+import CartItem from "../components/CartItem";
 
 const Products = () => {
   const [books, setBooks] = useState([]);
@@ -17,7 +18,6 @@ const Products = () => {
     const data = await fetchBooks(selectedCategory, search);
     setBooks(data);
   };
-
   return (
     <section className="max-w-7xl mx-auto p-6">
       <SearchBar setSearch={setSearch} />

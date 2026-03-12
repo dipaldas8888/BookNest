@@ -8,15 +8,14 @@ const Cart = () => {
   const dispatch = useDispatch();
 
   const cartItems = useSelector((state) => state.cart.items);
+  console.log(cartItems);
 
   return (
     <section className="max-w-7xl mx-auto p-6">
       <h1 className="text-3xl font-bold mb-2">Your Cart</h1>
-
       <p className="text-gray-500 mb-6">
         {cartItems.length} Products in your cart
       </p>
-
       {cartItems.length === 0 ? (
         <p className="text-gray-500">Your cart is empty</p>
       ) : (

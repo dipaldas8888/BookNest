@@ -4,9 +4,10 @@ import endpoints from "../../api/endpoints";
 
 export const createOrder = createAsyncThunk(
   "order/createOrder",
-  async (items, thunkAPI) => {
+  async (orderData, thunkAPI) => {
     try {
-      const res = await API.post(endpoints.orders.create, { items });
+      const res = await API.post(endpoints.orders.create, orderData);
+      console.log(res.data);
       return res.data;
     } catch (error) {
       return thunkAPI.rejectWithValue("Order failed");

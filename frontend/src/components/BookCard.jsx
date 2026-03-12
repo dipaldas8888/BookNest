@@ -9,6 +9,11 @@ const BookCard = ({ book }) => {
   const handleClick = () => {
     navigate(`/product/${book._id}`);
   };
+  const handleAdd = (e) => {
+    e.stopPropagation();
+    dispatch(addToCart(book));
+    console.log("book added", book);
+  };
 
   return (
     <div className="rounded-2xl shadow-md hover:shadow-lg transition flex bg-gray-100 overflow-hidden">
@@ -16,7 +21,7 @@ const BookCard = ({ book }) => {
         onClick={handleClick}
         src={book.coverImage?.url}
         alt={book.title}
-        className="w-[180px] h-[250px] object-cover"
+        className="w-[180px] h-[250px] object-cover cursor-pointer"
       />
 
       <div className="flex flex-col justify-between p-4 flex-1">
@@ -29,8 +34,8 @@ const BookCard = ({ book }) => {
         </div>
 
         <button
-          onClick={() => dispatch(addToCart(book))}
-          className="flex items-center justify-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-sm font-medium py-2 rounded-lg mt-4"
+          onClick={handleAdd}
+          className="flex items-center justify-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-sm font-medium py-2 rounded-lg mt-4 cursor-pointer"
         >
           <ShoppingCart size={18} />
           Add to Cart
