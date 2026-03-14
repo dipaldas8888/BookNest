@@ -94,4 +94,17 @@ const login = async (req, res) => {
     res.status(500).send({ message: "Failed to login" });
   }
 };
-module.exports = { register, login };
+
+const googleAuthSuccess = async (req, res) => {
+  try {
+    const token = generateToken(req.user);
+
+    res.redirect(`http://localhost:5173/oauth-success?token=${token}`);
+  } catch (error) {
+    res.status(500).send({
+      message: "Google authentication failed",
+    });
+  }
+};
+
+module.exports = { register, login, googleAuthSuccess };
