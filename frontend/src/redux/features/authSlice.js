@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { jwtDecode } from "jwt-decode";
 import API from "../../api/axios";
 import endpoints from "../../api/endpoints";
 
@@ -32,6 +33,22 @@ export const registerUser = createAsyncThunk(
     }
   },
 );
+const token = localStorage.getItem("token");
+
+let user = null;
+
+if (token) {
+  try {
+    const decoded = jwtDecode(token);
+
+    user = {
+      id: decoded.id,
+      role: decoded.role,
+    };
+  } catch (error) {
+    console.log("Invalid token");
+  }
+}
 
 const initialState = {
   user: null,
@@ -50,6 +67,16 @@ const authSlice = createSlice({
       state.token = null;
       localStorage.removeItem("token");
     },
+    setAuthFromToken: (state, action) => {
+      const token = action.payload;
+      const decoded = jwtDecode(token);
+
+      state.token = token;
+      state.user = {
+        id: decoded.id,
+        role: decoded.role,
+      };
+    },
   },
 
   extraReducers: (builder) => {
@@ -62,7 +89,7 @@ const authSlice = createSlice({
 
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
-        state.user = action.payload.user;
+        state.user = action.payload.User;
         state.token = action.payload.token;
       })
 
@@ -86,6 +113,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout } = authSlice.actions;
+export const { logout, setAuthFromToken } = authSlice.actions;
 
 export default authSlice.reducer;

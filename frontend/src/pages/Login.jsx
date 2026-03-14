@@ -54,6 +54,9 @@ const Login = () => {
 
           <button
             type="button"
+            onClick={() => {
+              window.location.href = "http://localhost:5000/google";
+            }}
             className="flex items-center justify-center mt-4 w-full rounded-lg shadow-md hover:bg-gray-100"
           >
             <div className="px-4 py-3">
@@ -90,6 +93,7 @@ const Login = () => {
                 type="email"
                 name="email"
                 value={formData.email}
+                autoComplete="email"
                 onChange={handleChange}
                 required
                 className="bg-gray-200 text-gray-700 border border-gray-300 rounded py-2 px-4 block w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
@@ -111,6 +115,7 @@ const Login = () => {
                 type="password"
                 name="password"
                 value={formData.password}
+                autoComplete="current-password"
                 onChange={handleChange}
                 required
                 className="bg-gray-200 text-gray-700 border border-gray-300 rounded py-2 px-4 block w-full focus:outline-none focus:ring-2 focus:ring-blue-400"

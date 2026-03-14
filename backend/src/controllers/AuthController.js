@@ -99,7 +99,7 @@ const googleAuthSuccess = async (req, res) => {
   try {
     const token = generateToken(req.user);
 
-    res.redirect(`http://localhost:5173/oauth-success?token=${token}`);
+    res.redirect(`http://localhost:5173?token=${token}`);
   } catch (error) {
     res.status(500).send({
       message: "Google authentication failed",

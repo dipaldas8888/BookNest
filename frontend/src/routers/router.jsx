@@ -10,6 +10,7 @@ import Cart from "../pages/Cart";
 import ProductDetails from "../pages/ProductDetails";
 import About from "../pages/About";
 import Contact from "../pages/Contact";
+import OAuthSuccess from "../pages/OAuthSuccess";
 
 import ProtectedRoute from "./ProtectedRoute";
 
@@ -36,6 +37,7 @@ const router = createBrowserRouter([
 
       { path: "/products", element: <Products /> },
       { path: "/product/:id", element: <ProductDetails /> },
+      { path: "/oauth-success", element: <OAuthSuccess /> },
 
       {
         path: "/cart",
