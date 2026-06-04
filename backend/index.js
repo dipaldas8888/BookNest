@@ -2,11 +2,13 @@ const express = require("express");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
 const session = require("express-session");
+const cookieParser = require("cookie-parser");
 
 require("dotenv").config();
 const BookRoute = require("./src/routes/BookRoutes");
 const OrderRoutes = require("./src/routes/OrderRoutes");
 const AuthRoutes = require("./src/routes/AuthRoutes");
+const UserRoutes = require("./src/routes/UserRoutes");
 const passport = require("./src/config/passport");
 const cors = require("cors");
 
@@ -14,6 +16,7 @@ const app = express();
 
 const port = process.env.PORT || 5000;
 app.use(express.json());
+app.use(cookieParser());
 app.use(
   cors({
     origin: ["http://localhost:5173"],
@@ -32,6 +35,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use("/api/books", BookRoute);
+app.use("/api/users", UserRoutes);
 app.use("/", OrderRoutes);
 app.use("/", AuthRoutes);
 
