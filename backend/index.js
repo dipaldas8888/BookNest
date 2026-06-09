@@ -51,3 +51,5 @@ mongoose
 app.listen(port, () => {
   console.log("Server running is  in 5000");
 });
+// Nodemon reload trigger after .env change
+

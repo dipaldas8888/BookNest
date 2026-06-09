@@ -11,6 +11,8 @@ import ProductDetails from "../pages/ProductDetails";
 import About from "../pages/About";
 import Contact from "../pages/Contact";
 import OAuthSuccess from "../pages/OAuthSuccess";
+import ForgotPassword from "../pages/ForgotPassword";
+import Profile from "../pages/Profile";
 
 import ProtectedRoute from "./ProtectedRoute";
 
@@ -34,6 +36,7 @@ const router = createBrowserRouter([
 
       { path: "/login", element: <Login /> },
       { path: "/register", element: <Register /> },
+      { path: "/forgot-password", element: <ForgotPassword /> },
 
       { path: "/products", element: <Products /> },
       { path: "/product/:id", element: <ProductDetails /> },
@@ -44,6 +47,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <Cart />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/profile",
+        element: (
+          <ProtectedRoute>
+            <Profile />
           </ProtectedRoute>
         ),
       },

@@ -1,0 +1,42 @@
+export const books = [
+  {
+    id: 1,
+    title: "Dune",
+    author: "Frank Herbert",
+    category: "Sci-Fi",
+    price: 19.99,
+    image: "https://picsum.photos/180/250?random=1",
+  },
+  {
+    id: 2,
+    title: "Harry Potter",
+    author: "J.K Rowling",
+    category: "Fantasy",
+    price: 14.99,
+    image: "https://picsum.photos/180/250?random=2",
+  },
+  {
+    id: 3,
+    title: "Dracula",
+    author: "Bram Stoker",
+    category: "Horror",
+    price: 12.99,
+    image: "https://picsum.photos/180/250?random=3",
+  },
+  {
+    id: 4,
+    title: "Pride and Prejudice",
+    author: "Jane Austen",
+    category: "Classic",
+    price: 10.99,
+    image: "https://picsum.photos/180/250?random=4",
+  },
+  {
+    id: 5,
+    title: "The Hobbit",
+    author: "J.R.R Tolkien",
+    category: "Fantasy",
+    price: 16.99,
+    image: "https://picsum.photos/180/250?random=5",
+  },
+];

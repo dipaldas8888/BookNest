@@ -2,7 +2,13 @@ const endpoints = {
   auth: {
     login: "/login",
     register: "/register",
-    profile: "/profile",
+    logout: "/logout",
+    me: "/me",
+    verifyOtp: "/verify-otp",
+    resendOtp: "/resend-otp",
+    forgotPassword: "/forgot-password",
+    resetPassword: "/reset-password",
+    updateProfile: "/update-profile",
   },
 
   books: {
@@ -17,6 +23,13 @@ const endpoints = {
     create: "/order",
     myOrders: "/my-orders",
     allOrders: "/all-orders",
+    delete: (id) => `/order/${id}`,
+  },
+
+  users: {
+    all: "/api/users",
+    updateRole: (id) => `/api/users/${id}/role`,
+    delete: (id) => `/api/users/${id}`,
   },
 };
 

@@ -24,6 +24,17 @@ const userSchema = new mongoose.Schema(
       enum: ["user", "admin"],
       default: "user",
     },
+    avatar: {
+      url: { type: String, default: "" },
+      public_id: { type: String, default: "" },
+    },
+    shippingAddress: {
+      address: { type: String, default: "" },
+      city: { type: String, default: "" },
+      state: { type: String, default: "" },
+      zipCode: { type: String, default: "" },
+      country: { type: String, default: "" },
+    },
   },
   {
     timestamps: true,
@@ -31,8 +42,8 @@ const userSchema = new mongoose.Schema(
 );
 
 userSchema.pre("save", async function () {
-  if (!this.isModified("password")) return;
-
+  // Skip hashing if the password was already hashed externally (e.g. during OTP registration flow)
+  if (!this.isModified("password") || this.$locals?.skipPasswordHash) return;
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
 });

@@ -1,0 +1,38 @@
+export const cartItems = [
+  {
+    id: 1,
+    title: "Great product name goes here",
+    color: "Silver",
+    size: "Large",
+    price: 23,
+    quantity: 2,
+    image: "https://picsum.photos/80?1",
+  },
+  {
+    id: 2,
+    title: "Innovative gadget title here",
+    color: "Black",
+    size: "Medium",
+    price: 35,
+    quantity: 1,
+    image: "https://picsum.photos/80?2",
+  },
+  {
+    id: 3,
+    title: "Stylish accessory name",
+    color: "Gold",
+    size: "Small",
+    price: 15,
+    quantity: 3,
+    image: "https://picsum.photos/80?3",
+  },
+  {
+    id: 4,
+    title: "Cutting-edge device title",
+    color: "Blue",
+    size: "Extra Large",
+    price: 50,
+    quantity: 1,
+    image: "https://picsum.photos/80?4",
+  },
+];

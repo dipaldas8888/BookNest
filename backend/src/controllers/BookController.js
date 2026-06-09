@@ -29,24 +29,96 @@ const PostBook = async (req, res) => {
 
 const getAllBooks = async (req, res) => {
   try {
-    const { category, search } = req.query;
+    const {
+      category,
+      search,
+      minPrice,
+      maxPrice,
+      trending,
+      sortBy = "newest",
+      page = 1,
+      limit = 12,
+    } = req.query;
+
     let query = {};
+
+    // Category filter
     if (category && category !== "All") {
       query.category = { $regex: `^${category}$`, $options: "i" };
     }
 
+    // Search by title or description
     if (search) {
-      query.title = { $regex: search, $options: "i" };
+      query.$or = [
+        { title: { $regex: search, $options: "i" } },
+        { description: { $regex: search, $options: "i" } },
+      ];
     }
-    const books = await Book.find(query).sort({ createdAt: -1 });
+
+    // Price range filter
+    if (minPrice !== undefined || maxPrice !== undefined) {
+      query.price = {};
+      if (minPrice !== undefined && minPrice !== "")
+        query.price.$gte = Number(minPrice);
+      if (maxPrice !== undefined && maxPrice !== "")
+        query.price.$lte = Number(maxPrice);
+    }
+
+    // Trending filter
+    if (trending === "true") {
+      query.trending = true;
+    }
+
+    // Sort options
+    let sortOption = {};
+    switch (sortBy) {
+      case "price_asc":
+        sortOption = { price: 1 };
+        break;
+      case "price_desc":
+        sortOption = { price: -1 };
+        break;
+      case "title_asc":
+        sortOption = { title: 1 };
+        break;
+      case "title_desc":
+        sortOption = { title: -1 };
+        break;
+      case "trending":
+        sortOption = { trending: -1, createdAt: -1 };
+        break;
+      case "newest":
+      default:
+        sortOption = { createdAt: -1 };
+        break;
+    }
+
+    // Pagination
+    const pageNum = Math.max(1, parseInt(page));
+    const limitNum = Math.min(50, Math.max(1, parseInt(limit)));
+    const skip = (pageNum - 1) * limitNum;
+
+    const [books, totalCount] = await Promise.all([
+      Book.find(query).sort(sortOption).skip(skip).limit(limitNum),
+      Book.countDocuments(query),
+    ]);
+
+    const totalPages = Math.ceil(totalCount / limitNum);
 
     res.status(200).send({
       message: "Books fetched successfully",
       books,
+      pagination: {
+        totalCount,
+        totalPages,
+        currentPage: pageNum,
+        limit: limitNum,
+        hasNextPage: pageNum < totalPages,
+        hasPrevPage: pageNum > 1,
+      },
     });
   } catch (error) {
-    console.log("Error occurred", error);
-
+    console.error("Error occurred", error);
     res.status(500).send({
       message: "Unable to fetch books",
     });

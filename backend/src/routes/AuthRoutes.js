@@ -1,6 +1,7 @@
 const express = require("express");
 const passport = require("passport");
 const verifyToken = require("../middlewares/VerifyToken");
+const upload = require("../middlewares/upload");
 
 const {
   register,
@@ -8,6 +9,11 @@ const {
   logout,
   getMe,
   googleAuthSuccess,
+  verifyOTP,
+  resendOTP,
+  forgotPassword,
+  resetPassword,
+  updateProfile,
 } = require("../controllers/AuthController");
 
 const router = express.Router();
@@ -17,6 +23,16 @@ router.post("/login", login);
 router.post("/logout", logout);
 router.get("/me", verifyToken, getMe);
 
+// OTP routes
+router.post("/verify-otp", verifyOTP);
+router.post("/resend-otp", resendOTP);
+router.post("/forgot-password", forgotPassword);
+router.post("/reset-password", resetPassword);
+
+// Profile setup route
+router.put("/update-profile", verifyToken, upload.single("avatar"), updateProfile);
+
+// Google OAuth routes
 router.get(
   "/google",
   passport.authenticate("google", { scope: ["profile", "email"] }),
