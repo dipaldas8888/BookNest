@@ -26,11 +26,7 @@ Direct filter navigation showing books belonging specifically to the selected ca
 Immersive view showing cover arts, synopsis details, pricing, and the main "Add to Cart" checkout entry point.
 ![Product Details](screenshots/product_details.png)
 
-#### Shopping Cart
-A beautiful sidebar checkout flow allowing quantity edits, price calculations, and Razorpay-secured checkout.
-![Shopping Cart](screenshots/cart.png)
 
----
 
 ### 🛡️ Authentication & Info Screens
 
