@@ -2,6 +2,7 @@ import React from "react";
 import { Trash2, Minus, Plus } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { removeFromCart, updateQuantity } from "../redux/features/cartSlice";
+import { toast } from "react-toastify";
 
 const CartItem = ({ item }) => {
   const dispatch = useDispatch();
@@ -9,6 +10,7 @@ const CartItem = ({ item }) => {
   const decrease = () => {
     if (item.quantity === 1) {
       dispatch(removeFromCart(item._id));
+      toast.info(`"${item.title}" removed from cart`);
     } else {
       dispatch(updateQuantity({ id: item._id, quantity: item.quantity - 1 }));
     }
@@ -16,6 +18,11 @@ const CartItem = ({ item }) => {
 
   const increase = () => {
     dispatch(updateQuantity({ id: item._id, quantity: item.quantity + 1 }));
+  };
+
+  const handleRemove = () => {
+    dispatch(removeFromCart(item._id));
+    toast.info(`"${item.title}" removed from cart`);
   };
 
   return (
@@ -31,12 +38,12 @@ const CartItem = ({ item }) => {
       <div className="flex-1 min-w-0">
         <h3 className="font-bold text-gray-900 text-sm leading-snug truncate">{item.title}</h3>
         <p className="text-xs text-gray-500 mt-0.5 capitalize">{item.category || "Book"}</p>
-        <p className="font-black text-gray-900 text-base mt-2">${(item.price || 0).toFixed(2)}</p>
+        <p className="font-black text-gray-900 text-base mt-2">₹{(item.price || 0).toFixed(2)}</p>
       </div>
 
       {/* Delete */}
       <button
-        onClick={() => dispatch(removeFromCart(item._id))}
+        onClick={handleRemove}
         className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition cursor-pointer shrink-0"
         title="Remove"
       >

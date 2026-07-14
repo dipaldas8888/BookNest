@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import API from "../../api/axios";
 import endpoints from "../../api/endpoints";
 import { Trash2, Loader2, AlertCircle, ShoppingBag, Search, Calendar, Check, ChevronLeft, ChevronRight } from "lucide-react";
+import { toast } from "react-toastify";
 
 const ITEMS_PER_PAGE = 5;
 
@@ -9,7 +10,6 @@ const DashboardOrders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [successMessage, setSuccessMessage] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -22,6 +22,7 @@ const DashboardOrders = () => {
     } catch (err) {
       console.error(err);
       setError("Failed to fetch store orders");
+      toast.error("Failed to fetch store orders");
     } finally {
       setLoading(false);
     }
@@ -35,14 +36,12 @@ const DashboardOrders = () => {
     if (!window.confirm("Are you sure you want to delete this order? This action cannot be undone.")) return;
 
     try {
-      setSuccessMessage("");
       const res = await API.delete(endpoints.orders.delete(orderId));
       setOrders((prev) => prev.filter((order) => order._id !== orderId));
-      setSuccessMessage(res.data.message || "Order deleted successfully");
-      setTimeout(() => setSuccessMessage(""), 3000);
+      toast.success(res.data.message || "Order deleted successfully");
     } catch (err) {
       console.error(err);
-      alert(err.response?.data?.message || "Failed to delete order");
+      toast.error(err.response?.data?.message || "Failed to delete order");
     }
   };
 
@@ -105,13 +104,6 @@ const DashboardOrders = () => {
           />
         </div>
       </div>
-
-      {successMessage && (
-        <div className="p-4 text-xs font-bold text-green-700 bg-green-50 rounded-xl border border-green-100 flex items-center gap-2">
-          <Check className="w-4.5 h-4.5" />
-          <span>{successMessage}</span>
-        </div>
-      )}
 
       {error && (
         <div className="p-4 text-xs text-red-700 bg-red-50 rounded-xl border border-red-100 flex items-center gap-2">

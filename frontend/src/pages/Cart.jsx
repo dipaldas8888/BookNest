@@ -5,6 +5,7 @@ import CartItem from "../components/CartItem";
 import CartSummary from "../components/CartSummary";
 import { clearCart } from "../redux/features/cartSlice";
 import { ShoppingBag, ArrowRight, ChevronRight, Shield, Truck, RefreshCw, CreditCard, Send } from "lucide-react";
+import { toast } from "react-toastify";
 
 const trustBadges = [
   { icon: Shield, label: "100% Secure", sub: "SSL Encrypted" },
@@ -71,7 +72,10 @@ const Cart = () => {
                   ← Continue Shopping
                 </Link>
                 <button
-                  onClick={() => dispatch(clearCart())}
+                  onClick={() => {
+                    dispatch(clearCart());
+                    toast.info("Cart cleared");
+                  }}
                   className="text-xs font-bold text-red-400 hover:text-red-600 transition cursor-pointer"
                 >
                   Clear Cart

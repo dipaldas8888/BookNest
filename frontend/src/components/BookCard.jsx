@@ -2,6 +2,7 @@ import { ShoppingCart, Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../redux/features/cartSlice";
+import { toast } from "react-toastify";
 
 const ratingMap = {
   "fiction": 4.3, "business": 4.5, "technology": 4.4,
@@ -32,6 +33,7 @@ const BookCard = ({ book }) => {
   const handleAdd = (e) => {
     e.stopPropagation();
     dispatch(addToCart(book));
+    toast.success(`"${book.title}" added to cart!`);
   };
 
   const rating = ratingMap[book.category?.toLowerCase()] || ratingMap.default;

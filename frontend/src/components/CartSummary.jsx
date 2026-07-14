@@ -5,6 +5,7 @@ import { clearCart } from "../redux/features/cartSlice";
 import { Tag, ArrowRight, Loader2, ShieldCheck } from "lucide-react";
 import API from "../api/axios";
 import endpoints from "../api/endpoints";
+import { toast } from "react-toastify";
 
 const PROMO_CODES = {
   BOOK10: 10,
@@ -42,15 +43,17 @@ const CartSummary = ({ items }) => {
     const code = promoInput.trim().toUpperCase();
     if (PROMO_CODES[code]) {
       setAppliedPromo(code);
+      toast.success(`Promo code "${code}" applied successfully!`);
     } else {
       setPromoError("Invalid promo code. Try BOOK10, BOOKNEST20, or READ15");
+      toast.error("Invalid promo code.");
     }
   };
 
   // Razorpay Checkout
   const handleRazorpayCheckout = async () => {
     if (!user) {
-      alert("Please sign in to checkout.");
+      toast.warning("Please sign in to complete your checkout.");
       return;
     }
 
@@ -58,7 +61,7 @@ const CartSummary = ({ items }) => {
     try {
       const loaded = await loadRazorpayScript();
       if (!loaded) {
-        alert("Razorpay failed to load. Check your internet connection.");
+        toast.error("Razorpay SDK failed to load. Check your internet connection.");
         setCheckoutLoading(false);
         return;
       }
@@ -101,13 +104,15 @@ const CartSummary = ({ items }) => {
               }));
               dispatch(createOrder({ items: orderItems, totalAmount: total }));
               dispatch(clearCart());
-              alert("🎉 Payment successful! Your order has been placed.");
+              toast.success("🎉 Payment successful! Your order has been placed.");
             } else {
-              alert("Payment verification failed. Please contact support.");
+              toast.error("Payment verification failed. Please contact support.");
             }
           } catch (err) {
             console.error("Verify error:", err);
-            alert("Payment verification error. Please contact support.");
+            toast.error("Payment verification error. Please contact support.");
+          } finally {
+            setCheckoutLoading(false);
           }
         },
         modal: {
@@ -118,13 +123,13 @@ const CartSummary = ({ items }) => {
       const rzp = new window.Razorpay(options);
       rzp.on("payment.failed", (response) => {
         console.error("Payment failed:", response.error);
-        alert(`Payment failed: ${response.error.description}`);
+        toast.error(`Payment failed: ${response.error.description}`);
         setCheckoutLoading(false);
       });
       rzp.open();
     } catch (err) {
       console.error("Checkout error:", err);
-      alert(err.response?.data?.message || "Checkout failed. Please try again.");
+      toast.error(err.response?.data?.message || "Checkout failed. Please try again.");
       setCheckoutLoading(false);
     }
   };
@@ -137,13 +142,13 @@ const CartSummary = ({ items }) => {
       <div className="space-y-3 text-sm">
         <div className="flex justify-between text-gray-600">
           <span>Subtotal</span>
-          <span className="font-bold text-gray-900">${subtotal.toFixed(2)}</span>
+          <span className="font-bold text-gray-900">₹{subtotal.toFixed(2)}</span>
         </div>
 
         {discountAmt > 0 && (
           <div className="flex justify-between text-green-600">
             <span>Discount (-{discountPct}%)</span>
-            <span className="font-bold">-${discountAmt.toFixed(2)}</span>
+            <span className="font-bold">-₹{discountAmt.toFixed(2)}</span>
           </div>
         )}
 
@@ -153,13 +158,13 @@ const CartSummary = ({ items }) => {
             {delivery === 0 ? (
               <span className="text-green-600 font-black text-xs uppercase">Free</span>
             ) : (
-              `$${delivery.toFixed(2)}`
+              `₹${delivery.toFixed(2)}`
             )}
           </span>
         </div>
 
         {delivery > 0 && (
-          <p className="text-[11px] text-gray-400">Free delivery on orders above $500</p>
+          <p className="text-[11px] text-gray-400">Free delivery on orders above ₹500</p>
         )}
       </div>
 
@@ -169,7 +174,7 @@ const CartSummary = ({ items }) => {
       {/* Total */}
       <div className="flex justify-between items-baseline">
         <span className="text-lg font-black text-gray-900">Total</span>
-        <span className="text-2xl font-black text-gray-900">${total.toFixed(2)}</span>
+        <span className="text-2xl font-black text-gray-900">₹{total.toFixed(2)}</span>
       </div>
 
       {/* Promo code */}

@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import API from "../api/axios";
 import endpoints from "../api/endpoints";
 import { addToCart } from "../redux/features/cartSlice";
+import { toast } from "react-toastify";
 import {
   ShoppingBag, ArrowLeft, BookOpen, Loader2, Star,
   ShieldCheck, Truck, RefreshCw, ChevronRight, Package,
@@ -50,6 +51,7 @@ const ProductDetails = () => {
     if (book) {
       for (let i = 0; i < qty; i++) dispatch(addToCart(book));
       setAdded(true);
+      toast.success(`${qty}x "${book.title}" added to cart!`);
       setTimeout(() => setAdded(false), 2000);
     }
   };

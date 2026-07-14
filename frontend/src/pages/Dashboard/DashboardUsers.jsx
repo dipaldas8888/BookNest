@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import API from "../../api/axios";
 import endpoints from "../../api/endpoints";
 import { Trash2, Shield, User, Loader2, AlertCircle, Check, ChevronLeft, ChevronRight } from "lucide-react";
+import { toast } from "react-toastify";
 
 const ITEMS_PER_PAGE = 5;
 
@@ -9,7 +10,6 @@ const DashboardUsers = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [successMessage, setSuccessMessage] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
   const fetchUsers = async () => {
@@ -20,6 +20,7 @@ const DashboardUsers = () => {
       setError(null);
     } catch (err) {
       setError(err.response?.data?.message || "Failed to fetch users");
+      toast.error(err.response?.data?.message || "Failed to fetch users");
     } finally {
       setLoading(false);
     }
@@ -31,15 +32,13 @@ const DashboardUsers = () => {
 
   const handleRoleChange = async (userId, newRole) => {
     try {
-      setSuccessMessage("");
       const res = await API.put(endpoints.users.updateRole(userId), { role: newRole });
       setUsers((prev) =>
         prev.map((u) => (u._id === userId ? { ...u, role: newRole } : u))
       );
-      setSuccessMessage(res.data.message || "User role updated successfully");
-      setTimeout(() => setSuccessMessage(""), 3000);
+      toast.success(res.data.message || "User role updated successfully");
     } catch (err) {
-      alert(err.response?.data?.message || "Failed to update role");
+      toast.error(err.response?.data?.message || "Failed to update role");
     }
   };
 
@@ -47,13 +46,11 @@ const DashboardUsers = () => {
     if (!window.confirm("Are you sure you want to delete this user?")) return;
 
     try {
-      setSuccessMessage("");
       const res = await API.delete(endpoints.users.delete(userId));
       setUsers((prev) => prev.filter((u) => u._id !== userId));
-      setSuccessMessage(res.data.message || "User deleted successfully");
-      setTimeout(() => setSuccessMessage(""), 3000);
+      toast.success(res.data.message || "User deleted successfully");
     } catch (err) {
-      alert(err.response?.data?.message || "Failed to delete user");
+      toast.error(err.response?.data?.message || "Failed to delete user");
     }
   };
 
@@ -82,13 +79,6 @@ const DashboardUsers = () => {
           Manage your store users, assign administrative rights, and delete user accounts.
         </p>
       </div>
-
-      {successMessage && (
-        <div className="p-4 text-xs font-bold text-green-700 bg-green-50 rounded-xl border border-green-100 flex items-center gap-2">
-          <Check className="w-4.5 h-4.5" />
-          <span>{successMessage}</span>
-        </div>
-      )}
 
       {error && (
         <div className="p-4 text-xs text-red-700 bg-red-50 rounded-xl border border-red-100 flex items-center gap-2">

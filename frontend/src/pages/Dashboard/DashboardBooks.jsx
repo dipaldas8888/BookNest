@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import API from "../../api/axios";
 import endpoints from "../../api/endpoints";
 import { Plus, Edit2, Trash2, Loader2, X, Upload, Check, Search, ChevronLeft, ChevronRight, Image as ImageIcon } from "lucide-react";
+import { toast } from "react-toastify";
 
 const ITEMS_PER_PAGE = 5;
 
@@ -10,7 +11,6 @@ const DashboardBooks = () => {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [successMessage, setSuccessMessage] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -37,6 +37,7 @@ const DashboardBooks = () => {
     } catch (err) {
       console.error(err);
       setError("Failed to load books");
+      toast.error("Failed to load books");
     } finally {
       setLoading(false);
     }
@@ -116,7 +117,7 @@ const DashboardBooks = () => {
         const res = await API.put(endpoints.books.update(editingBookId), submissionData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
-        setSuccessMessage("Book updated successfully!");
+        toast.success("Book updated successfully!");
         setBooks((prev) =>
           prev.map((b) => (b._id === editingBookId ? res.data.book : b))
         );
@@ -127,14 +128,15 @@ const DashboardBooks = () => {
         const res = await API.post(endpoints.books.create, submissionData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
-        setSuccessMessage("Book added successfully!");
+        toast.success("Book added successfully!");
         setBooks((prev) => [res.data.book, ...prev]);
       }
       closeModal();
-      setTimeout(() => setSuccessMessage(""), 3000);
     } catch (err) {
       console.error(err);
-      setError(err.response?.data?.message || err.message || "Failed to submit form");
+      const errMsg = err.response?.data?.message || err.message || "Failed to submit form";
+      setError(errMsg);
+      toast.error(errMsg);
     } finally {
       setSubmitting(false);
     }
@@ -144,14 +146,12 @@ const DashboardBooks = () => {
     if (!window.confirm("Are you sure you want to delete this book? This will permanently remove the book and its image.")) return;
 
     try {
-      setSuccessMessage("");
       await API.delete(endpoints.books.delete(id));
       setBooks((prev) => prev.filter((b) => b._id !== id));
-      setSuccessMessage("Book deleted successfully!");
-      setTimeout(() => setSuccessMessage(""), 3000);
+      toast.success("Book deleted successfully!");
     } catch (err) {
       console.error(err);
-      alert(err.response?.data?.message || "Failed to delete book");
+      toast.error(err.response?.data?.message || "Failed to delete book");
     }
   };
 
@@ -198,12 +198,6 @@ const DashboardBooks = () => {
         </button>
       </div>
 
-      {successMessage && (
-        <div className="p-4 text-xs font-bold text-green-700 bg-green-50 rounded-xl border border-green-100 flex items-center gap-2">
-          <Check className="w-4.5 h-4.5" />
-          <span>{successMessage}</span>
-        </div>
-      )}
 
       {/* Toolbar */}
       <div className="flex items-center bg-white border border-gray-200 rounded-xl px-4 py-2.5 gap-2 max-w-md shadow-sm">

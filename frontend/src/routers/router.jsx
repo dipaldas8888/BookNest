@@ -21,11 +21,13 @@ import DashboardHome from "../pages/Dashboard/DashboardHome";
 import DashboardBooks from "../pages/Dashboard/DashboardBooks";
 import DashboardOrders from "../pages/Dashboard/DashboardOrders";
 import DashboardUsers from "../pages/Dashboard/DashboardUsers";
+import ErrorPage from "../components/ErrorPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    errorElement: <ErrorPage />,
 
     children: [
       { path: "/", element: <Home /> },
@@ -63,8 +65,8 @@ const router = createBrowserRouter([
 
   {
     path: "/dashboard",
-
     element: <DashboardLayout />,
+    errorElement: <ErrorPage />,
 
     children: [
       { index: true, element: <DashboardHome /> },

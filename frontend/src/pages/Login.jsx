@@ -5,6 +5,7 @@ import { loginUser, setAuthFromToken, setUser } from "../redux/features/authSlic
 import API from "../api/axios";
 import endpoints from "../api/endpoints";
 import { Mail, Lock, Loader2, Eye, EyeOff, BookOpen, MailCheck, ArrowRight } from "lucide-react";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -29,12 +30,16 @@ const Login = () => {
     const resultAction = await dispatch(loginUser(formData));
     if (loginUser.fulfilled.match(resultAction)) {
       const user = resultAction.payload.User;
+      toast.success(`Welcome back, ${user?.name || "User"}!`);
       navigate(user?.role === "admin" ? "/dashboard" : "/");
     } else if (loginUser.rejected.match(resultAction)) {
       const payload = resultAction.payload;
       if (payload?.isVerified === false) {
+        toast.info("Please verify your email address to log in.");
         setUnverifiedEmail(payload.email || formData.email);
         setShowOtp(true);
+      } else {
+        toast.error(payload?.message || "Invalid email or password.");
       }
     }
   };
@@ -46,6 +51,7 @@ const Login = () => {
     try {
       const res = await API.post(endpoints.auth.verifyOtp, { email: unverifiedEmail, otp });
       setOtpSuccess("Account verified! Redirecting...");
+      toast.success("Account verified successfully! Welcome to BookNest.");
       if (res.data.token) {
         localStorage.setItem("token", res.data.token);
         dispatch(setAuthFromToken(res.data.token));
@@ -54,6 +60,7 @@ const Login = () => {
       setTimeout(() => navigate(res.data.User?.role === "admin" ? "/dashboard" : "/"), 1500);
     } catch (err) {
       setOtpError(err.response?.data?.message || "Invalid or expired code.");
+      toast.error(err.response?.data?.message || "Invalid or expired OTP code.");
     } finally {
       setOtpLoading(false);
     }
@@ -64,8 +71,10 @@ const Login = () => {
     try {
       await API.post(endpoints.auth.resendOtp, { email: unverifiedEmail });
       setOtpSuccess("A new code has been sent.");
+      toast.info("A new OTP verification code has been sent to your email.");
     } catch (err) {
       setOtpError(err.response?.data?.message || "Failed to resend.");
+      toast.error(err.response?.data?.message || "Failed to resend OTP.");
     } finally {
       setResendLoading(false);
     }

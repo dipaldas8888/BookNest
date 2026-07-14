@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import API from "../api/axios";
 import endpoints from "../api/endpoints";
 import { User, Mail, Lock, Loader2, Eye, EyeOff, BookOpen, MailCheck, ArrowRight } from "lucide-react";
+import { toast } from "react-toastify";
 
 const Register = () => {
   const dispatch = useDispatch();
@@ -31,8 +32,11 @@ const Register = () => {
     try {
       const resultAction = await dispatch(registerUser(formData));
       if (registerUser.fulfilled.match(resultAction)) {
+        toast.info("Verification OTP sent! Please check your email.");
         setRegisteredEmail(formData.email);
         setShowOtp(true);
+      } else if (registerUser.rejected.match(resultAction)) {
+        toast.error(resultAction.payload?.message || "Registration failed. Try again.");
       }
     } finally {
       setRegisterLoading(false);
@@ -46,6 +50,7 @@ const Register = () => {
     try {
       const res = await API.post(endpoints.auth.verifyOtp, { email: registeredEmail, otp });
       setOtpSuccess("Account verified! Redirecting...");
+      toast.success("Account verified successfully! Welcome to BookNest.");
       if (res.data.token) {
         localStorage.setItem("token", res.data.token);
         dispatch(setAuthFromToken(res.data.token));
@@ -54,6 +59,7 @@ const Register = () => {
       setTimeout(() => navigate(res.data.User?.role === "admin" ? "/dashboard" : "/"), 1500);
     } catch (err) {
       setOtpError(err.response?.data?.message || "Invalid or expired code.");
+      toast.error(err.response?.data?.message || "Invalid or expired OTP code.");
     } finally {
       setOtpLoading(false);
     }
@@ -64,8 +70,10 @@ const Register = () => {
     try {
       await API.post(endpoints.auth.resendOtp, { email: registeredEmail });
       setOtpSuccess("A new code has been sent.");
+      toast.info("A new OTP verification code has been sent to your email.");
     } catch (err) {
       setOtpError(err.response?.data?.message || "Failed to resend.");
+      toast.error(err.response?.data?.message || "Failed to resend OTP.");
     } finally {
       setResendLoading(false);
     }

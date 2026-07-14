@@ -11,6 +11,7 @@ import {
   Loader2, 
   AlertCircle 
 } from "lucide-react";
+import { toast } from "react-toastify";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -29,7 +30,6 @@ const Profile = () => {
 
   const [avatarFile, setAvatarFile] = useState(null);
   const [avatarPreview, setAvatarPreview] = useState("");
-  const [message, setMessage] = useState({ type: "", text: "" });
 
   useEffect(() => {
     if (user) {
@@ -66,7 +66,6 @@ const Profile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage({ type: "", text: "" });
 
     const submissionData = new FormData();
     submissionData.append("name", formData.name);
@@ -89,13 +88,10 @@ const Profile = () => {
     try {
       const resultAction = await dispatch(updateUserProfile(submissionData));
       if (updateUserProfile.fulfilled.match(resultAction)) {
-        setMessage({ type: "success", text: "Profile updated successfully!" });
+        toast.success("Profile updated successfully!");
         setFormData(prev => ({ ...prev, password: "" }));
       } else {
-        setMessage({ 
-          type: "error", 
-          text: resultAction.payload || "Failed to update profile. Please try again." 
-        });
+        toast.error(resultAction.payload || "Failed to update profile. Please try again.");
       }
     } catch (err) {
       console.error(err);
@@ -113,23 +109,7 @@ const Profile = () => {
             <h1 className="text-3xl font-extrabold">Account Settings</h1>
             <p className="mt-1 text-purple-100 text-sm">Update your personal information and shipping details.</p>
           </div>
-
           <form onSubmit={handleSubmit} className="p-8 space-y-8">
-            {message.text && (
-              <div className={`p-4 rounded-xl text-xs font-semibold flex items-center gap-2 border ${
-                message.type === "success" 
-                  ? "bg-green-50 text-green-700 border-green-200" 
-                  : "bg-red-50 text-red-700 border-red-200"
-              }`}>
-                {message.type === "success" ? (
-                  <CheckCircle2 className="w-4 h-4 text-green-600 shrink-0" />
-                ) : (
-                  <AlertCircle className="w-4 h-4 text-red-650 shrink-0" />
-                )}
-                {message.text}
-              </div>
-            )}
-
             {/* Avatar Section */}
             <div className="flex flex-col sm:flex-row items-center gap-6 pb-6 border-b border-gray-100">
               <div className="relative group">
