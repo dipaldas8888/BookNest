@@ -9,6 +9,7 @@ const BookRoute = require("./src/routes/BookRoutes");
 const OrderRoutes = require("./src/routes/OrderRoutes");
 const AuthRoutes = require("./src/routes/AuthRoutes");
 const UserRoutes = require("./src/routes/UserRoutes");
+const PaymentRoutes = require("./src/routes/PaymentRoutes");
 const passport = require("./src/config/passport");
 const cors = require("cors");
 
@@ -38,6 +39,7 @@ app.use("/api/books", BookRoute);
 app.use("/api/users", UserRoutes);
 app.use("/", OrderRoutes);
 app.use("/", AuthRoutes);
+app.use("/", PaymentRoutes);
 
 mongoose
   .connect(process.env.MONGO_URL)
@@ -51,5 +53,3 @@ mongoose
 app.listen(port, () => {
   console.log("Server running is  in 5000");
 });
-// Nodemon reload trigger after .env change
-

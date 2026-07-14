@@ -31,6 +31,11 @@ const endpoints = {
     updateRole: (id) => `/api/users/${id}/role`,
     delete: (id) => `/api/users/${id}`,
   },
+
+  payment: {
+    createOrder: "/api/payment/create-order",
+    verify: "/api/payment/verify",
+  },
 };
 
 export default endpoints;

@@ -1,4 +1,259 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap');
+
 @import "tailwindcss";
 
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+/* =========================================
+   LIGHT THEME — BookNest Design System
+   Primary: Forest Green (#1a3a2a)
+   Accent: Amber/Orange (#e67e22)
+   Surface: White / Warm Cream
+   ========================================= */
+
+:root {
+  --color-primary: #1a3a2a;
+  --color-primary-light: #2d5a40;
+  --color-primary-dark: #0f2318;
+  --color-accent: #e67e22;
+  --color-accent-light: #f39c12;
+  --color-surface: #ffffff;
+  --color-bg: #f9f7f4;
+  --color-border: #e8e2d9;
+  --color-text: #1c1c1c;
+  --color-muted: #6b7280;
+  --color-success: #16a34a;
+  --radius: 12px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  min-height: 100vh;
+  background-color: var(--color-bg);
+}
+
+::selection {
+  background: rgba(230, 126, 34, 0.2);
+  color: var(--color-primary);
+}
+
+/* ── RESET DARK OVERRIDES ─────────────────── */
+
+/* Override old dark bg utilities → transparent/white */
+.bg-white,
+.bg-gray-50,
+.bg-gray-100 {
+  background-color: #ffffff !important;
+}
+
+.border-gray-50,
+.border-gray-100,
+.border-gray-200 {
+  border-color: var(--color-border) !important;
+}
+
+/* Text colors — light-theme values */
+.text-gray-900,
+.text-gray-800,
+.text-gray-700,
+.text-slate-700,
+.text-black {
+  color: #1c1c1c !important;
+}
+
+.text-gray-650,
+.text-gray-655,
+.text-gray-600,
+.text-gray-500,
+.text-gray-400,
+.text-slate-600,
+.text-slate-500 {
+  color: #6b7280 !important;
+}
+
+/* Purple accent → forest green */
+.text-indigo-600,
+.text-purple-600,
+.text-purple-650,
+.text-purple-700 {
+  color: var(--color-primary-light) !important;
+}
+
+/* Purple bg → primary green */
+.bg-indigo-600,
+.bg-purple-600 {
+  background: var(--color-primary) !important;
+  background-image: none !important;
+}
+
+.hover\:bg-gray-50:hover,
+.hover\:bg-gray-100:hover,
+.hover\:bg-purple-50:hover,
+.bg-purple-50,
+.bg-purple-100 {
+  background-color: rgba(26, 58, 42, 0.06) !important;
+}
+
+/* Inputs — clean light style */
+input,
+select,
+textarea {
+  background-color: #ffffff !important;
+  border-color: #d1d5db !important;
+  color: #1c1c1c !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #9ca3af !important;
+}
+
+option {
+  background: #ffffff;
+  color: #1c1c1c;
+}
+
+/* Shadows — softer for light theme */
+.shadow-sm { box-shadow: 0 1px 3px rgba(0,0,0,0.08) !important; }
+.shadow-md { box-shadow: 0 4px 12px rgba(0,0,0,0.10) !important; }
+.shadow-lg { box-shadow: 0 8px 24px rgba(0,0,0,0.12) !important; }
+.shadow-xl { box-shadow: 0 16px 40px rgba(0,0,0,0.14) !important; }
+.shadow-2xl { box-shadow: 0 24px 60px rgba(0,0,0,0.16) !important; }
+
+/* Remove dark blur from rounded panels */
+.rounded-2xl,
+.rounded-xl {
+  backdrop-filter: none;
+}
+
+/* ── APP SHELL ────────────────────────────── */
+.app-shell {
+  background-color: var(--color-bg);
+}
+
+/* ── BOOKSTORE UTILITIES ──────────────────── */
+
+/* Primary green button style */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--color-primary);
+  color: #ffffff;
+  font-weight: 700;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+  font-size: 0.875rem;
+}
+.btn-primary:hover {
+  background-color: var(--color-primary-light);
+  transform: translateY(-1px);
+}
+
+/* Hero section gradient overlay */
+.hero-gradient {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 60%, #3d7a54 100%);
+}
+
+/* Category pill */
+.category-pill {
+  display: inline-block;
+  background-color: rgba(26, 58, 42, 0.08);
+  color: var(--color-primary);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid rgba(26, 58, 42, 0.15);
+}
+
+/* Book card hover */
+.book-card {
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+  transition: box-shadow 0.25s, transform 0.25s;
+  overflow: hidden;
+}
+.book-card:hover {
+  box-shadow: 0 12px 32px rgba(0,0,0,0.14);
+  transform: translateY(-4px);
+}
+
+/* Section header accent line */
+.section-tag {
+  display: inline-block;
+  color: var(--color-accent);
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+/* Star rating */
+.stars {
+  color: var(--color-accent);
+  font-size: 0.75rem;
+}
+
+/* Strikethrough price */
+.price-old {
+  text-decoration: line-through;
+  color: #9ca3af;
+  font-size: 0.85em;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #f1f0ed; }
+::-webkit-scrollbar-thumb { background: #c5bfb5; border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: #a09890; }
+
+/* ── ANIMATIONS ────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleUp {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-slideUp {
+  animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-scaleUp {
+  animation: scaleUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Stagger delays */
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
 

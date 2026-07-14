@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from "react";
 import API from "../../api/axios";
 import endpoints from "../../api/endpoints";
-import { Trash2, Shield, User, Loader2, AlertCircle } from "lucide-react";
+import { Trash2, Shield, User, Loader2, AlertCircle, Check, ChevronLeft, ChevronRight } from "lucide-react";
+
+const ITEMS_PER_PAGE = 5;
 
 const DashboardUsers = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
 
   const fetchUsers = async () => {
     try {
       setLoading(true);
       const res = await API.get(endpoints.users.all);
-      setUsers(res.data.users);
+      setUsers(res.data.users || []);
       setError(null);
     } catch (err) {
       setError(err.response?.data?.message || "Failed to fetch users");
@@ -54,84 +57,92 @@ const DashboardUsers = () => {
     }
   };
 
+  // Pagination Logic
+  const totalItems = users.length;
+  const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, totalItems);
+  const paginatedUsers = users.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[400px] gap-2">
-        <Loader2 className="w-10 h-10 animate-spin text-purple-600" />
-        <span className="text-gray-500 font-medium">Fetching users...</span>
+      <div className="flex flex-col items-center justify-center min-h-[400px] gap-3 animate-fadeIn">
+        <Loader2 className="w-10 h-10 animate-spin text-[#0284c7]" />
+        <span className="text-gray-500 font-semibold text-sm">Fetching users...</span>
       </div>
     );
   }
 
   return (
-    <div className="max-w-6xl mx-auto py-8 px-4">
-      <div className="flex justify-between items-center mb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-800">User Management</h1>
-          <p className="text-gray-500 text-sm mt-1">
-            Manage your store users, assign administrative rights, and delete user accounts.
-          </p>
-        </div>
+    <div className="space-y-6 animate-slideUp">
+      {/* Header */}
+      <div>
+        <h1 className="text-2xl font-black text-gray-900 tracking-tight">User Management</h1>
+        <p className="text-gray-500 text-xs mt-1">
+          Manage your store users, assign administrative rights, and delete user accounts.
+        </p>
       </div>
 
       {successMessage && (
-        <div className="mb-4 p-4 text-sm text-green-700 bg-green-100 rounded-lg flex items-center gap-2 transition duration-300">
-          <span className="font-semibold">Success:</span> {successMessage}
+        <div className="p-4 text-xs font-bold text-green-700 bg-green-50 rounded-xl border border-green-100 flex items-center gap-2">
+          <Check className="w-4.5 h-4.5" />
+          <span>{successMessage}</span>
         </div>
       )}
 
       {error && (
-        <div className="mb-4 p-4 text-sm text-red-700 bg-red-100 rounded-lg flex items-center gap-2">
-          <AlertCircle className="w-5 h-5" />
-          <span className="font-semibold">Error:</span> {error}
+        <div className="p-4 text-xs text-red-700 bg-red-50 rounded-xl border border-red-100 flex items-center gap-2">
+          <AlertCircle className="w-4.5 h-4.5" />
+          <span>{error}</span>
         </div>
       )}
 
-      <div className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
+      {/* Users Table */}
+      <div className="bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-150">
         <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
+          <table className="w-full text-left border-collapse text-xs">
             <thead>
-              <tr className="bg-gray-50 border-b border-gray-100">
-                <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">User</th>
-                <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Email</th>
-                <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Role</th>
-                <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Joined Date</th>
-                <th className="px-6 py-4 text-xs font-semibold text-gray-500 text-right uppercase tracking-wider">Actions</th>
+              <tr className="bg-gray-50/50 border-b border-gray-100 text-gray-450 font-bold uppercase tracking-wider">
+                <th className="px-6 py-4 font-semibold text-gray-500">User Profile</th>
+                <th className="px-6 py-4 font-semibold text-gray-500">Email Address</th>
+                <th className="px-6 py-4 font-semibold text-gray-500">Access Role</th>
+                <th className="px-6 py-4 font-semibold text-gray-500">Joined Date</th>
+                <th className="px-6 py-4 font-semibold text-gray-500 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
-              {users.map((user) => (
-                <tr key={user._id} className="hover:bg-gray-50/50 transition duration-150">
+            <tbody className="divide-y divide-gray-50">
+              {paginatedUsers.map((user) => (
+                <tr key={user._id} className="hover:bg-gray-50/20 transition duration-150">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center gap-3">
-                      <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold ${
+                      <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-xs font-black shrink-0 ${
                         user.role === "admin" 
-                          ? "bg-purple-100 text-purple-700" 
-                          : "bg-gray-100 text-gray-700"
+                          ? "bg-sky-50 text-[#0284c7] border border-sky-100" 
+                          : "bg-gray-100 text-gray-700 border border-gray-200"
                       }`}>
-                        {user.name.charAt(0).toUpperCase()}
+                        {user.name?.charAt(0).toUpperCase() || "U"}
                       </div>
                       <div>
-                        <div className="font-semibold text-gray-800">{user.name}</div>
-                        <div className="text-xs text-gray-400">ID: {user._id}</div>
+                        <div className="font-bold text-gray-900 text-sm">{user.name}</div>
+                        <div className="text-[10px] text-gray-400">ID: {user._id}</div>
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-gray-600 font-medium">{user.email}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-gray-500 font-semibold">{user.email}</td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center gap-2">
                       {user.role === "admin" ? (
-                        <Shield className="w-4 h-4 text-purple-600" />
+                        <Shield className="w-4 h-4 text-[#0284c7]" />
                       ) : (
-                        <User className="w-4 h-4 text-gray-500" />
+                        <User className="w-4 h-4 text-gray-400" />
                       )}
                       <select
                         value={user.role}
                         onChange={(e) => handleRoleChange(user._id, e.target.value)}
-                        className={`text-xs font-semibold rounded-full px-3 py-1 border focus:outline-none focus:ring-2 focus:ring-purple-500 cursor-pointer ${
+                        className={`text-[10px] font-black uppercase rounded-full px-3 py-1 border focus:outline-none focus:ring-2 focus:ring-sky-500/20 cursor-pointer ${
                           user.role === "admin"
-                            ? "bg-purple-50 text-purple-700 border-purple-200"
-                            : "bg-gray-50 text-gray-700 border-gray-200"
+                            ? "bg-sky-50 text-[#0284c7] border-sky-200"
+                            : "bg-gray-50 text-gray-600 border-gray-200"
                         }`}
                       >
                         <option value="user">User</option>
@@ -139,7 +150,7 @@ const DashboardUsers = () => {
                       </select>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-gray-500 text-sm">
+                  <td className="px-6 py-4 whitespace-nowrap text-gray-500 font-medium">
                     {new Date(user.createdAt).toLocaleDateString("en-US", {
                       year: "numeric",
                       month: "short",
@@ -149,24 +160,64 @@ const DashboardUsers = () => {
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <button
                       onClick={() => handleDeleteUser(user._id)}
-                      className="text-red-500 hover:text-red-700 transition duration-150 p-2 rounded-lg hover:bg-red-50"
+                      className="text-red-500 hover:text-red-700 transition duration-150 p-2 rounded-xl hover:bg-red-50 cursor-pointer"
                       title="Delete User"
                     >
-                      <Trash2 className="w-5 h-5 inline" />
+                      <Trash2 className="w-4 h-4" />
                     </button>
                   </td>
                 </tr>
               ))}
-              {users.length === 0 && (
+              {paginatedUsers.length === 0 && (
                 <tr>
-                  <td colSpan="5" className="text-center py-10 text-gray-500 font-medium">
-                    No users found
+                  <td colSpan="5" className="text-center py-12 text-gray-400 font-bold">
+                    No registered users found
                   </td>
                 </tr>
               )}
             </tbody>
           </table>
         </div>
+
+        {/* Pagination Footer */}
+        {totalPages > 1 && (
+          <div className="bg-white px-6 py-4 border-t border-gray-100 flex items-center justify-between">
+            <div className="text-xs text-gray-500 font-semibold">
+              Showing <span className="font-black text-gray-900">{startIndex + 1}</span> to{" "}
+              <span className="font-black text-gray-900">{endIndex}</span> of{" "}
+              <span className="font-black text-gray-900">{totalItems}</span> users
+            </div>
+            <div className="flex items-center gap-1.5">
+              <button
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                className="p-2 border border-gray-200 rounded-xl hover:bg-gray-50 transition disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+              >
+                <ChevronLeft className="w-4 h-4 text-gray-650" />
+              </button>
+              {Array.from({ length: totalPages }).map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setCurrentPage(i + 1)}
+                  className={`w-8 h-8 rounded-xl font-bold transition text-xs border ${
+                    currentPage === i + 1
+                      ? "bg-[#0284c7] border-[#0284c7] text-white"
+                      : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50"
+                  } cursor-pointer`}
+                >
+                  {i + 1}
+                </button>
+              ))}
+              <button
+                disabled={currentPage === totalPages}
+                onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                className="p-2 border border-gray-200 rounded-xl hover:bg-gray-50 transition disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+              >
+                <ChevronRight className="w-4 h-4 text-gray-650" />
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

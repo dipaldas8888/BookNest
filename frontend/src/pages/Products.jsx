@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback, useRef } from "react";
+import { useSearchParams } from "react-router-dom";
 import BookCard from "../components/BookCard";
 import { fetchBooks } from "../api/booksApi";
 import { categories } from "../data/categories";
@@ -26,6 +27,8 @@ const SORT_OPTIONS = [
 const LIMIT_OPTIONS = [12, 24, 48];
 
 const Products = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+
   // Filter state
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchInput, setSearchInput] = useState("");
@@ -36,6 +39,22 @@ const Products = () => {
   const [sortBy, setSortBy] = useState("newest");
   const [limit, setLimit] = useState(12);
   const [currentPage, setCurrentPage] = useState(1);
+
+  // Sync with URL params
+  useEffect(() => {
+    const cat = searchParams.get("category");
+    if (cat) {
+      setSelectedCategory(cat);
+    } else {
+      setSelectedCategory("All");
+    }
+
+    const q = searchParams.get("search");
+    if (q) {
+      setSearchInput(q);
+      setSearch(q);
+    }
+  }, [searchParams]);
 
   // Data state
   const [books, setBooks] = useState([]);
@@ -89,6 +108,12 @@ const Products = () => {
   }, [searchInput]);
 
   const handleCategoryChange = (cat) => {
+    if (cat === "All") {
+      searchParams.delete("category");
+    } else {
+      searchParams.set("category", cat);
+    }
+    setSearchParams(searchParams);
     setSelectedCategory(cat);
     resetPage();
     setSidebarOpen(false);
@@ -113,6 +138,7 @@ const Products = () => {
     setMaxPrice("");
     setTrendingOnly(false);
     setSortBy("newest");
+    setSearchParams({});
     setCurrentPage(1);
   };
 
@@ -125,7 +151,7 @@ const Products = () => {
     sortBy !== "newest";
 
   return (
-    <section className="max-w-screen-xl mx-auto px-4 py-8">
+    <section className="max-w-screen-xl mx-auto px-4 py-8 animate-fadeIn">
       {/* ── Page header ── */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div>
