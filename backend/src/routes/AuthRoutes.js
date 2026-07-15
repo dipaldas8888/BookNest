@@ -35,7 +35,13 @@ router.put("/update-profile", verifyToken, upload.single("avatar"), updateProfil
 // Google OAuth routes
 router.get(
   "/google",
-  passport.authenticate("google", { scope: ["profile", "email"] }),
+  (req, res, next) => {
+    const origin = req.query.origin || "https://book-nest-omega.vercel.app";
+    passport.authenticate("google", {
+      scope: ["profile", "email"],
+      state: origin,
+    })(req, res, next);
+  }
 );
 
 router.get(

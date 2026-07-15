@@ -26,6 +26,10 @@ Direct filter navigation showing books belonging specifically to the selected ca
 Immersive view showing cover arts, synopsis details, pricing, and the main "Add to Cart" checkout entry point.
 ![Product Details](screenshots/product_details.png)
 
+#### Razorpay Integration Proof
+Secure checkout pop-up overlay integration powered by the Razorpay sandbox payment gateway.
+![Razorpay Integration](screenshots/razorpay.png)
+
 
 
 ### 🛡️ Authentication & Info Screens

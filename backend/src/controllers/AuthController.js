@@ -368,7 +368,7 @@ const googleAuthSuccess = async (req, res) => {
   try {
     const token = generateToken(req.user);
     res.cookie("token", token, cookieOptions);
-    const frontendUrl = (process.env.FRONTEND_URL || "https://book-nest-omega.vercel.app").replace(/\/$/, "");
+    const frontendUrl = (req.query.state || process.env.FRONTEND_URL || "https://book-nest-omega.vercel.app").replace(/\/$/, "");
     res.redirect(`${frontendUrl}/oauth-success?token=${token}`);
   } catch (error) {
     console.error("Google auth error:", error);

@@ -166,7 +166,7 @@ const Login = () => {
             type="button"
             onClick={() => {
               const base = import.meta.env.VITE_API_URL || "https://booknest-il4o.onrender.com/";
-              window.location.href = base.replace(/\/$/, "") + "/google";
+              window.location.href = `${base.replace(/\/$/, "")}/google?origin=${encodeURIComponent(window.location.origin)}`;
             }}
             className="flex items-center justify-center gap-3 w-full py-3 rounded-xl border border-gray-200 hover:bg-gray-50 transition font-semibold text-gray-700 text-sm cursor-pointer"
           >
