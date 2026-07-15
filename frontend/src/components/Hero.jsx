@@ -3,14 +3,14 @@ import { Search, ArrowRight, Star } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const floatingCovers = [
-  "https://covers.openlibrary.org/b/isbn/0735211299-M.jpg",
-  "https://covers.openlibrary.org/b/isbn/0525559477-M.jpg",
-  "https://covers.openlibrary.org/b/isbn/0062316117-M.jpg",
-  "https://covers.openlibrary.org/b/isbn/1451648537-M.jpg",
-  "https://covers.openlibrary.org/b/isbn/0062409850-M.jpg",
-  "https://covers.openlibrary.org/b/isbn/1982137274-M.jpg",
-];
+import book1 from "../assets/books/book-1.png";
+import book2 from "../assets/books/book-2.png";
+import book3 from "../assets/books/book-3.png";
+import book4 from "../assets/books/book-4.png";
+import book5 from "../assets/books/book-5.png";
+import book6 from "../assets/books/book-6.png";
+
+const floatingCovers = [book1, book2, book3, book4, book5, book6];
 
 export default function Hero() {
   const [searchQuery, setSearchQuery] = useState("");
