@@ -369,7 +369,7 @@ const googleAuthSuccess = async (req, res) => {
     const token = generateToken(req.user);
     res.cookie("token", token, cookieOptions);
     const frontendUrl = (process.env.FRONTEND_URL || "https://book-nest-omega.vercel.app").replace(/\/$/, "");
-    res.redirect(`${frontendUrl}/oauth-success`);
+    res.redirect(`${frontendUrl}/oauth-success?token=${token}`);
   } catch (error) {
     console.error("Google auth error:", error);
     res.status(500).json({ message: "Google authentication failed." });

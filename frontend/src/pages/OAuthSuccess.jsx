@@ -8,6 +8,12 @@ const OAuthSuccess = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("token");
+    if (token) {
+      localStorage.setItem("token", token);
+    }
+
     dispatch(fetchCurrentUser())
       .unwrap()
       .then((res) => {
@@ -24,7 +30,7 @@ const OAuthSuccess = () => {
       });
   }, [dispatch, navigate]);
 
-  return <h2 className="text-center mt-20">Logging you in securely...</h2>;
+  return <h2 className="text-center mt-20 text-gray-600 font-medium">Logging you in securely...</h2>;
 };
 
 export default OAuthSuccess;
