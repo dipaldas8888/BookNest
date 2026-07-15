@@ -164,7 +164,10 @@ const Login = () => {
           {/* Google */}
           <button
             type="button"
-            onClick={() => { window.location.href = "http://localhost:5000/google"; }}
+            onClick={() => {
+              const base = import.meta.env.VITE_API_URL || "https://booknest-il4o.onrender.com/";
+              window.location.href = base.replace(/\/$/, "") + "/google";
+            }}
             className="flex items-center justify-center gap-3 w-full py-3 rounded-xl border border-gray-200 hover:bg-gray-50 transition font-semibold text-gray-700 text-sm cursor-pointer"
           >
             <svg className="h-5 w-5" viewBox="0 0 40 40">

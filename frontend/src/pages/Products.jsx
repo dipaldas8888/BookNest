@@ -26,6 +26,36 @@ const SORT_OPTIONS = [
 
 const LIMIT_OPTIONS = [12, 24, 48];
 
+const BookSkeleton = () => (
+  <div className="bg-white flex flex-col h-full animate-pulse border border-gray-100 rounded-xl overflow-hidden shadow-sm">
+    {/* Cover image placeholder */}
+    <div className="bg-gray-200 aspect-[3/4] w-full" />
+    
+    {/* Details placeholder */}
+    <div className="p-4 flex flex-col justify-between flex-1 gap-4">
+      <div className="space-y-2">
+        {/* Rating stars placeholder */}
+        <div className="flex gap-1">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className="w-3 h-3 bg-gray-200 rounded-full" />
+          ))}
+        </div>
+        {/* Title placeholder */}
+        <div className="h-4 bg-gray-200 rounded-md w-5/6" />
+        <div className="h-4 bg-gray-200 rounded-md w-2/3" />
+        {/* Category placeholder */}
+        <div className="h-3 bg-gray-200 rounded-md w-1/3" />
+      </div>
+      
+      {/* Bottom controls placeholder */}
+      <div className="flex items-center justify-between mt-2">
+        <div className="h-5 bg-gray-200 rounded-md w-16" />
+        <div className="h-8 bg-gray-200 rounded-lg w-16" />
+      </div>
+    </div>
+  </div>
+);
+
 const Products = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -416,9 +446,19 @@ const Products = () => {
 
           {/* Books grid */}
           {loading ? (
-            <div className="flex flex-col items-center justify-center min-h-[400px] gap-3">
-              <Loader2 className="w-10 h-10 animate-spin text-purple-600" />
-              <span className="text-gray-500 font-medium">Loading books...</span>
+            <div className="relative">
+              {/* Centered spinner overlay */}
+              <div className="absolute inset-0 bg-white/20 backdrop-blur-[1px] flex items-center justify-center z-10">
+                <div className="bg-white/80 p-4 rounded-full shadow-lg border border-gray-150 flex items-center justify-center">
+                  <Loader2 className="w-8 h-8 animate-spin text-purple-600" />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {Array.from({ length: limit }).map((_, idx) => (
+                  <BookSkeleton key={idx} />
+                ))}
+              </div>
             </div>
           ) : error ? (
             <div className="flex flex-col items-center justify-center min-h-[400px] gap-3">

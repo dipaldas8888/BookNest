@@ -21,6 +21,26 @@ const StarRating = ({ rating = 4.3 }) => (
   </div>
 );
 
+const TrendingSkeleton = () => (
+  <div className="bg-white flex flex-col h-full animate-pulse border border-gray-150 rounded-xl overflow-hidden shadow-sm">
+    <div className="bg-gray-200 aspect-[3/4] w-full" />
+    <div className="p-4 flex flex-col gap-2 flex-1">
+      <div className="flex gap-1">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <div key={i} className="w-3 h-3 bg-gray-200 rounded-full" />
+        ))}
+      </div>
+      <div className="h-4 bg-gray-200 rounded-md w-5/6" />
+      <div className="h-4 bg-gray-200 rounded-md w-2/3" />
+      <div className="h-3 bg-gray-200 rounded-md w-1/3" />
+      <div className="mt-auto flex items-center justify-between gap-2 pt-2">
+        <div className="h-5 bg-gray-200 rounded-md w-16" />
+        <div className="h-8 w-8 bg-gray-200 rounded-lg" />
+      </div>
+    </div>
+  </div>
+);
+
 const Trending = () => {
   const dispatch = useDispatch();
   const [books, setBooks] = useState([]);
@@ -35,9 +55,21 @@ const Trending = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-[300px]">
-        <Loader2 className="w-8 h-8 animate-spin text-[#1a3a2a]" />
-      </div>
+      <section className="py-16 bg-[#f9f7f4]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="flex items-end justify-between mb-10 animate-pulse">
+            <div className="space-y-2">
+              <div className="h-3 bg-gray-250 rounded w-48" />
+              <div className="h-8 bg-gray-250 rounded w-64" />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {Array.from({ length: 4 }).map((_, idx) => (
+              <TrendingSkeleton key={idx} />
+            ))}
+          </div>
+        </div>
+      </section>
     );
   }
 

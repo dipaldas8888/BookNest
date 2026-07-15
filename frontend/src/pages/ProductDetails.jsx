@@ -58,10 +58,67 @@ const ProductDetails = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#f9f7f4] flex items-center justify-center">
-        <div className="flex flex-col items-center gap-3">
-          <Loader2 className="w-10 h-10 animate-spin text-[#1a3a2a]" />
-          <p className="text-gray-500 font-medium text-sm">Loading book details...</p>
+      <div className="bg-[#f9f7f4] min-h-screen relative">
+        {/* Centered spinner overlay */}
+        <div className="absolute inset-0 bg-white/30 backdrop-blur-[1px] flex items-center justify-center z-15">
+          <div className="bg-white/80 p-4 rounded-full shadow-lg border border-gray-150 flex items-center justify-center">
+            <Loader2 className="w-8 h-8 animate-spin text-[#1a3a2a]" />
+          </div>
+        </div>
+
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 animate-pulse">
+          {/* Breadcrumb skeleton */}
+          <div className="h-4 bg-gray-250 rounded w-1/4 mb-8" />
+
+          <div className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+            {/* Left Cover skeleton */}
+            <div className="lg:col-span-4 space-y-4">
+              <div className="rounded-2xl bg-gray-250 aspect-[3/4] w-full" />
+              <div className="grid grid-cols-2 gap-2">
+                {Array.from({ length: 4 }).map((_, i) => (
+                  <div key={i} className="bg-white border border-gray-100 rounded-xl p-3 flex items-center gap-2.5 shadow-sm">
+                    <div className="w-4 h-4 bg-gray-200 rounded shrink-0" />
+                    <div className="space-y-1.5 flex-1">
+                      <div className="h-2.5 bg-gray-200 rounded w-5/6" />
+                      <div className="h-2 bg-gray-200 rounded w-2/3" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Right Details skeleton */}
+            <div className="lg:col-span-8 space-y-6">
+              <div className="space-y-3">
+                <div className="h-5 bg-gray-250 rounded w-16" />
+                <div className="h-10 bg-gray-250 rounded w-3/4" />
+                <div className="h-4 bg-gray-250 rounded w-1/3" />
+              </div>
+
+              {/* Star placeholder */}
+              <div className="flex gap-1">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <div key={i} className="w-4 h-4 bg-gray-200 rounded-full" />
+                ))}
+              </div>
+
+              {/* Price block skeleton */}
+              <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm space-y-4">
+                <div className="h-8 bg-gray-250 rounded w-32" />
+                <div className="h-3 bg-gray-200 rounded w-2/3" />
+              </div>
+
+              {/* Button skeleton */}
+              <div className="h-12 bg-gray-200 rounded-xl w-48" />
+
+              {/* Description skeleton */}
+              <div className="space-y-2">
+                <div className="h-3.5 bg-gray-200 rounded w-full" />
+                <div className="h-3.5 bg-gray-200 rounded w-5/6" />
+                <div className="h-3.5 bg-gray-200 rounded w-4/5" />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );
