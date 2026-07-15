@@ -7,7 +7,9 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: process.env.GOOGLE_CALLBACK_URL,
+      callbackURL: process.env.NODE_ENV === "production"
+        ? "https://booknest-il4o.onrender.com/google/callback"
+        : (process.env.GOOGLE_CALLBACK_URL || "http://localhost:5000/google/callback"),
     },
 
     async (accessToken, refreshToken, profile, done) => {
