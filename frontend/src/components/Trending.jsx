@@ -22,20 +22,25 @@ const StarRating = ({ rating = 4.3 }) => (
 );
 
 const TrendingSkeleton = () => (
-  <div className="bg-white flex flex-col h-full animate-pulse border border-gray-150 rounded-xl overflow-hidden shadow-sm">
-    <div className="bg-gray-200 aspect-[3/4] w-full" />
-    <div className="p-4 flex flex-col gap-2 flex-1">
-      <div className="flex gap-1">
+  <div className="bg-white flex flex-col h-full border border-gray-150 rounded-xl overflow-hidden shadow-sm relative">
+    <div className="shimmer aspect-[3/4] w-full relative">
+      <div className="absolute top-2 left-2 w-14 h-4 bg-white/20 rounded" />
+    </div>
+    <div className="p-4 flex flex-col flex-grow bg-white border-t border-gray-100">
+      <div className="shimmer h-2.5 rounded-md w-16 mb-2" />
+      <div className="shimmer h-4 rounded-md w-5/6 mb-1.5" />
+      <div className="shimmer h-4 rounded-md w-2/3 mb-2" />
+      <div className="flex gap-0.5 mb-3">
         {Array.from({ length: 5 }).map((_, i) => (
-          <div key={i} className="w-3 h-3 bg-gray-200 rounded-full" />
+          <div key={i} className="shimmer w-3 h-3 rounded-full" />
         ))}
       </div>
-      <div className="h-4 bg-gray-200 rounded-md w-5/6" />
-      <div className="h-4 bg-gray-200 rounded-md w-2/3" />
-      <div className="h-3 bg-gray-200 rounded-md w-1/3" />
-      <div className="mt-auto flex items-center justify-between gap-2 pt-2">
-        <div className="h-5 bg-gray-200 rounded-md w-16" />
-        <div className="h-8 w-8 bg-gray-200 rounded-lg" />
+      <div className="mt-auto flex items-center justify-between pt-3 border-t border-gray-100">
+        <div className="flex items-center gap-1.5">
+          <div className="shimmer h-4 rounded-md w-10" />
+          <div className="shimmer h-3.5 rounded-md w-8" />
+        </div>
+        <div className="shimmer h-7 w-7 rounded-lg" />
       </div>
     </div>
   </div>
@@ -56,11 +61,22 @@ const Trending = () => {
   if (loading) {
     return (
       <section className="py-16 bg-[#f9f7f4]">
+        <style>{`
+          .shimmer {
+            background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+            background-size: 200% 100%;
+            animation: shimmer-animation 1.5s infinite linear;
+          }
+          @keyframes shimmer-animation {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+          }
+        `}</style>
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="flex items-end justify-between mb-10 animate-pulse">
+          <div className="flex items-end justify-between mb-10">
             <div className="space-y-2">
-              <div className="h-3 bg-gray-250 rounded w-48" />
-              <div className="h-8 bg-gray-250 rounded w-64" />
+              <div className="shimmer h-3 rounded w-48" />
+              <div className="shimmer h-8 rounded w-64" />
             </div>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6">
